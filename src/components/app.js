@@ -18,19 +18,11 @@ class App extends Component {
     this.deleteNote = this.deleteNote.bind(this);
     this.editNoteContents = this.editNoteContents.bind(this);
     this.createNewNote = this.createNewNote.bind(this);
+    this.changeNotePosition = this.changeNotePosition.bind(this);
   }
 
   componentWillMount() {
-    const note1 = {
-      title: 'Title!',
-      text: 'Here is my text dere dere dere',
-      x: 0,
-      y: 0,
-      zIndex: 0,
-    };
-    this.setState({
-      notes: this.state.notes.set('one', note1),
-    });
+    this.createNewNote('Title!');
   }
 
   deleteNote(id) {
@@ -39,9 +31,9 @@ class App extends Component {
     });
   }
 
-  editNoteContents(id, newContents) {
+  editNoteContents(id, newContents, height, width) {
     this.setState({
-      notes: this.state.notes.update(id, (n) => { return Object.assign({}, n, { text: newContents }); }),
+      notes: this.state.notes.update(id, (n) => { return Object.assign({}, n, { text: newContents, height, width }); }),
     });
   }
 
@@ -51,11 +43,19 @@ class App extends Component {
       text: '',
       x: 0,
       y: 0,
+      height: 300,
+      width: 200,
       zIndex: 0,
     };
     this.setState({
       notes: this.state.notes.set(this.state.nextNoteId, newNote),
       nextNoteId: this.state.nextNoteId += 1,
+    });
+  }
+
+  changeNotePosition(id, x, y) {
+    this.setState({
+      notes: this.state.notes.update(id, (n) => { return Object.assign({}, n, { x, y }); }),
     });
   }
 
@@ -65,7 +65,7 @@ class App extends Component {
         <NewNoteBar createNewNote={this.createNewNote} />
         {this.state.notes.entrySeq().map(([id, note]) => {
           return (
-            <Note note={note} id={id} deleteNote={this.deleteNote} editNote={this.editNoteContents} key={id} />
+            <Note note={note} id={id} deleteNote={this.deleteNote} editNote={this.editNoteContents} key={id} onPositionChange={this.changeNotePosition} />
           );
         })}
       </div>

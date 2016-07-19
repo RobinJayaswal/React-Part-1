@@ -23,7 +23,7 @@ class NewNoteBar extends React.Component {
   render() {
     return (
       <div id="new-note-bar">
-        <input value={this.state.value} onChange={this.onInputChange} />
+        <input value={this.state.value} onChange={this.onInputChange} placeholder="Enter new title here" />
         <div onClick={this.createNewNote}>
           <span>Submit</span>
         </div>
