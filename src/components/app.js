@@ -13,6 +13,7 @@ class App extends Component {
     this.state = {
       notes: Immutable.Map({}),
       nextNoteId: 0,
+      nextZIndex: 0,
     };
 
     this.deleteNote = this.deleteNote.bind(this);
@@ -45,17 +46,21 @@ class App extends Component {
       y: 0,
       height: 300,
       width: 200,
-      zIndex: 0,
+      zIndex: this.state.nextZIndex,
     };
     this.setState({
       notes: this.state.notes.set(this.state.nextNoteId, newNote),
-      nextNoteId: this.state.nextNoteId += 1,
+      nextNoteId: this.state.nextNoteId + 1,
+      nextZIndex: this.state.nextZIndex + 1,
     });
   }
 
   changeNotePosition(id, x, y) {
     this.setState({
-      notes: this.state.notes.update(id, (n) => { return Object.assign({}, n, { x, y }); }),
+      notes: this.state.notes.update(id, (n) => {
+        return Object.assign({}, n, { x, y, zIndex: this.state.nextZIndex });
+      }),
+      nextZIndex: this.state.nextZIndex + 1,
     });
   }
 
