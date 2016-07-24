@@ -90,7 +90,7 @@ class Note extends React.Component {
   }
 
   render() {
-    let mainContents, editButton, noteStyles;
+    let mainContents, editButton, noteStyles, imageButton;
 
     if (this.state.isEditing) {
       mainContents = (
@@ -103,6 +103,9 @@ class Note extends React.Component {
       );
       editButton = (
         <div onClick={this.submitEdit}><span className="fa fa-check"></span></div>
+      );
+      imageButton = (
+        <div onClick={this.onToggleImageModal}><span className="fa fa-image"></span></div>
       );
     } else {
       mainContents = (
@@ -162,7 +165,7 @@ class Note extends React.Component {
               <span>{this.props.note.title}</span>
               <div onClick={this.deleteSelf}><span className="fa fa-trash-o"></span></div>
               {editButton}
-              <div onClick={this.onToggleImageModal}><span className="fa fa-image"></span></div>
+              {imageButton}
             </div>
             <div className="handle"><span className="fa fa-arrows-alt"></span></div>
 

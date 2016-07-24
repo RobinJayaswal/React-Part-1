@@ -14,13 +14,15 @@ The Note holds some state relevant to itself, like whether it is in editing mode
 
 ### What worked / didn’t work
 
-Pretty much everything seemed to work pretty well.
+Everything seemed to work pretty well.
 
 
 ### Extra Credit
 
 * "Make your notes extra pretty"
-	* I added a modal using react-modal that allows users to insert images using just the url, without having to type any markdown. Press the new Image Button at the top of a note, and you will be presented with a modal. Enter an image url, and all the markdown is taken care of for you.
+	* I added a modal using react-modal that allows users to insert images using just the url, without having to type any markdown. Press the new Image Button at the top of a note when editing, and you will be presented with a modal. Enter an image url, and all the markdown is taken care of for you.
+
+![alt text](./img/modal.png)
 
 * "Come up with a way to deal with zIndex sorting"
 	* When a new note is created, it will get the highest z-index of any note. When a note is dragged, it will get the highest z-index of any note. This way you can drag a note to bring it to the front.
@@ -28,3 +30,5 @@ Pretty much everything seemed to work pretty well.
 
 * "Resizable notes"
 	* When you are in editing mode for the notes, you can expand the textbox to change shape and size of note. When you exit editing mode, the note will retain the shape you just gave it.
+
+![alt text](./img/long.png)
