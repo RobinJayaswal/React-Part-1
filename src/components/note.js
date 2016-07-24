@@ -11,7 +11,7 @@ class Note extends React.Component {
     super(props);
     this.state = {
       isEditing: false,
-      contents: this.props.note.text,
+      contents: this.props.note.get('text'),
       showImageModal: false,
       imageURLValue: '',
     };
@@ -65,7 +65,7 @@ class Note extends React.Component {
     const height = Math.max(this.noteContainer.offsetHeight, this.noteContentsContainer.offsetHeight + this.topBar.offsetHeight + 30);
     const width = Math.max(this.noteContainer.offsetWidth, this.noteContentsContainer.offsetWidth + 20);
     if (height !== this.noteContainer.offsetHeight || width !== this.noteContainer.offsetWidth) {
-      this.props.editNote(this.props.id, this.props.note.text, height, width);
+      this.props.editNote(this.props.id, this.props.note.get('text'), height, width);
     }
   }
 
@@ -86,7 +86,13 @@ class Note extends React.Component {
   // the following syntax for dangerously setting html of a react component is
   // taken from https://facebook.github.io/react/tips/dangerously-set-inner-html.html
   createMarkup() {
-    return { __html: Marked(this.props.note.text) };
+    console.log(this.props.note.get('text'));
+    if (this.props.note.get('text') != null) {
+      console.log('in here for some reason');
+      return { __html: Marked(this.props.note.get('text')) };
+    } else {
+      return { __html: this.props.note.get('text') };
+    }
   }
 
   render() {
@@ -98,7 +104,7 @@ class Note extends React.Component {
           ref={(ref) => { this.noteEditBox = ref; }}
           value={this.state.contents}
           onChange={this.onContentsChange}
-          style={{ height: this.props.note.height - 50, width: this.props.note.width - 25 }}
+          style={{ height: this.props.note.get('height') - 50, width: this.props.note.get('width') - 25 }}
         />
       );
       editButton = (
@@ -118,9 +124,9 @@ class Note extends React.Component {
 
     if (!this.state.isEditing) {
       noteStyles = {
-        height: this.props.note.height,
-        width: this.props.note.width,
-        zIndex: this.props.note.zIndex,
+        height: this.props.note.get('height'),
+        width: this.props.note.get('width'),
+        zIndex: this.props.note.get('zIndex'),
       };
     }
 
@@ -142,7 +148,7 @@ class Note extends React.Component {
       <Draggable
         handle=".handle"
         defaultPosition={{ x: 0, y: 0 }}
-        position={null}
+        position={{ x: this.props.note.get('x'), y: this.props.note.get('y') }}
         grid={[2, 2]}
         zIndex={100}
         onStart={this.handleStart}
@@ -162,7 +168,7 @@ class Note extends React.Component {
           </Modal>
           <div className="top-bar" ref={(ref) => { this.topBar = ref; }}>
             <div className="left-top">
-              <span>{this.props.note.title}</span>
+              <span>{this.props.note.get('title')}</span>
               <div onClick={this.deleteSelf}><span className="fa fa-trash-o"></span></div>
               {editButton}
               {imageButton}

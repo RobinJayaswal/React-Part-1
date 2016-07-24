@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import Immutable from 'immutable';
-import Note from './note';
-import NewNoteBar from './newNoteBar';
+import Dashboard from './dashboard';
+import NoteBoard from './noteBoard';
 
 // var Immutable = require('immutable');
 // example class based component (smart component)
@@ -9,72 +8,38 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    // init component state here
     this.state = {
-      notes: Immutable.Map({}),
-      nextNoteId: 0,
-      nextZIndex: 0,
+      openNoteboardKey: null,
     };
 
-    this.deleteNote = this.deleteNote.bind(this);
-    this.editNoteContents = this.editNoteContents.bind(this);
-    this.createNewNote = this.createNewNote.bind(this);
-    this.changeNotePosition = this.changeNotePosition.bind(this);
+    this.openNoteboard = this.openNoteboard.bind(this);
+    this.exitNoteboard = this.exitNoteboard.bind(this);
   }
 
-  componentWillMount() {
-    this.createNewNote('Title!');
-  }
-
-  deleteNote(id) {
+  openNoteboard(key) {
     this.setState({
-      notes: this.state.notes.delete(id),
+      openNoteboardKey: key,
     });
   }
 
-  editNoteContents(id, newContents, height, width) {
+  exitNoteboard() {
     this.setState({
-      notes: this.state.notes.update(id, (n) => { return Object.assign({}, n, { text: newContents, height, width }); }),
+      openNoteboardKey: null,
     });
   }
 
-  createNewNote(title) {
-    const newNote = {
-      title,
-      text: '',
-      x: 0,
-      y: 0,
-      height: 300,
-      width: 200,
-      zIndex: this.state.nextZIndex,
-    };
-    this.setState({
-      notes: this.state.notes.set(this.state.nextNoteId, newNote),
-      nextNoteId: this.state.nextNoteId + 1,
-      nextZIndex: this.state.nextZIndex + 1,
-    });
-  }
-
-  changeNotePosition(id, x, y) {
-    this.setState({
-      notes: this.state.notes.update(id, (n) => {
-        return Object.assign({}, n, { x, y, zIndex: this.state.nextZIndex });
-      }),
-      nextZIndex: this.state.nextZIndex + 1,
-    });
-  }
-
+  // app will hold state of whether it is at dashboard or viewing specific note board
   render() {
-    return (
-      <div>
-        <NewNoteBar createNewNote={this.createNewNote} />
-        {this.state.notes.entrySeq().map(([id, note]) => {
-          return (
-            <Note note={note} id={id} deleteNote={this.deleteNote} editNote={this.editNoteContents} key={id} onPositionChange={this.changeNotePosition} />
-          );
-        })}
-      </div>
-    );
+    if (!this.state.openNoteboardKey) {
+      return (
+        <Dashboard openNoteboard={this.openNoteboard} />
+      );
+    } else {
+      console.log(this.state.openNoteboardKey);
+      return (
+        <NoteBoard key={this.state.openNoteboardKey} boardId={this.state.openNoteboardKey} exitNoteboard={this.exitNoteboard} />
+      );
+    }
   }
 }
 
