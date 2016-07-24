@@ -20,7 +20,6 @@ class Note extends React.Component {
     this.onContentsChange = this.onContentsChange.bind(this);
     this.toggleEditMode = this.toggleEditMode.bind(this);
     this.handleDrag = this.handleDrag.bind(this);
-    this.insertImage = this.insertImage.bind(this);
     this.onToggleImageModal = this.onToggleImageModal.bind(this);
     this.onImageURLChange = this.onImageURLChange.bind(this);
     this.onInsertImage = this.onInsertImage.bind(this);
@@ -84,21 +83,8 @@ class Note extends React.Component {
     this.props.onPositionChange(this.props.id, ui.x, ui.y);
   }
 
-  insertImage() {
-    console.log(this.noteEditBox.innerHTML);
-    this.setState({
-      contents: this.state.contents + 'added',
-    });
-    // dom('editing-area').value = dom('editing-area').value.substring(0, start)
-    //       + 'hello'
-    //       + dom('editing-area').value.substring(endPos, dom('editing-area').value.length);
-  }
-
-  // eventLogger = (e: MouseEvent, data: Object) => {
-  //   console.log('Event: ', event);
-  //   console.log('Data: ', data);
-  // };
-
+  // the following syntax for dangerously setting html of a react component is
+  // taken from https://facebook.github.io/react/tips/dangerously-set-inner-html.html
   createMarkup() {
     return { __html: Marked(this.props.note.text) };
   }
@@ -135,16 +121,20 @@ class Note extends React.Component {
       };
     }
 
+    // the following variable modalStyle, and its following usage in the <Modal />
+    // component, is code adapted from https://github.com/reactjs/react-modal
+    // it creates a popup modal for users to input their images
     let modalStyle = {
       content: {
         top: '40%', bottom: '40%', left: '30%', right: '30%',
         backgroundColor: 'rgba(0, 0, 0, .8)',
         color: 'white',
         boxShadow: '10px 10px 10px 10px rgba(0, 0, 0, 0.2)' },
-      overlay: { backgroundColor: 'rgba(0, 0, 0, 0.3)' },
-      position: 'relative',
+      overlay: { backgroundColor: 'rgba(0, 0, 0, 0.3)', zIndex: 1000 },
     };
 
+    // the code for using React Draggable is adapted from https://github.com/mzabriskie/react-draggable
+    // it creates a draggable component
     return (
       <Draggable
         handle=".handle"

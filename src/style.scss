@@ -31,7 +31,14 @@ body {
         margin-left: 5px;
         margin-right: 5px;
 
+        &:hover {
+          cursor: pointer;
+        }
       }
+    }
+
+    .handle:hover {
+      cursor: pointer;
     }
   }
   .main-contents {
@@ -70,9 +77,16 @@ body {
       &.insert {
         background-color: #add8e6;
       }
+
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 
+ReactModal__Overlay {
+  z-index: 1000;
+}
 
 }
 
@@ -107,6 +121,10 @@ body {
     border: solid thin white;
     border-radius: 3px;
     color: white;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
 }
